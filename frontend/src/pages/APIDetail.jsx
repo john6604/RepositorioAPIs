@@ -174,7 +174,7 @@ const APIDetail = () => {
   };
   const allTabs = [
     { id: "api", label: "API", icon: Code2 },
-    { id: "settings", label: "Configuración", icon: Settings },
+    { id: "settings", label: "Modificación", icon: Settings },
     { id: "colaborators", label: "Colaboradores", icon: Users },
     { id: "permissions", label: "Permisos", icon: Lock },
     { id: "consume", label: "Consumir", icon: FileTerminal },
@@ -482,7 +482,7 @@ const APIDetail = () => {
 
                   {/* Parámetros */}
                   <div className="bg-white rounded-xl shadow p-4">
-                    <h3 className="font-semibold mb-2">Parámetros:</h3>
+                    <h3 className="font-semibold mb-2">Parámetros de Entrada:</h3>
                     <pre className="bg-gray-100 p-2 rounded text-sm whitespace-pre-wrap font-mono">
                       {metodoInfo.parametros || "Ninguno"}
                     </pre>
@@ -498,7 +498,7 @@ const APIDetail = () => {
 
                   {/* Respuesta esperada */}
                   <div className="bg-white rounded-xl shadow p-4">
-                    <h3 className="font-semibold mb-2">Respuesta esperada:</h3>
+                    <h3 className="font-semibold mb-2">Salida:</h3>
                     <pre className="bg-gray-100 p-2 rounded text-sm whitespace-pre-wrap font-mono">
                       {metodoInfo.respuesta || "Ninguna"}
                     </pre>
@@ -516,7 +516,7 @@ const APIDetail = () => {
               <div className="bg-white p-6 rounded-xl shadow">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                   <Settings className="w-5 h-5" />
-                  Configuración de la API
+                  Modificación de la API
                 </h3>
                 <form className="space-y-4" onSubmit={handleGuardarCambios}>
                   <div>
@@ -594,37 +594,25 @@ const APIDetail = () => {
 
                     {/* Parámetros */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Parámetros (JSON)</label>
+                      <label className="block text-sm font-medium text-gray-700">Parámetros de Entrada:</label>
                       <textarea
                         value={metodoInfo?.parametros || ""}
                         onChange={(e) => handleMetodoChange(metodoActivo, "parametros", e.target.value)}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm font-mono"
                         rows={3}
-                        placeholder={`[\n  { "nombre": "ciudad", "tipo": "string", "requerido": true }\n]`}
+                        placeholder={`[\n Parámetros necesarios para el funcionamiento de la API.\n]`}
                       />
                     </div>
-
-                    {/* Body */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">Cuerpo (Body - JSON)</label>
-                      <textarea
-                        value={metodoInfo?.requestBody || ""}
-                        onChange={(e) => handleMetodoChange(metodoActivo, "requestBody", e.target.value)}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm font-mono"
-                        rows={3}
-                        placeholder={`{\n  "nombre": "Juan",\n  "edad": 30\n}`}
-                      />
-                    </div>
-
+                    
                     {/* Respuesta esperada */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Respuesta esperada (JSON)</label>
+                      <label className="block text-sm font-medium text-gray-700">Salida</label>
                       <textarea
                         value={metodoInfo?.respuesta || ""}
                         onChange={(e) => handleMetodoChange(metodoActivo, "respuesta", e.target.value)}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm font-mono"
                         rows={3}
-                        placeholder={`{\n  "mensaje": "Éxito",\n  "resultado": {...}\n}`}
+                        placeholder={`{\n  "Salida/Output de la API."\n}`}
                       />
                     </div>
 
@@ -878,12 +866,12 @@ const APIDetail = () => {
 
                 {/* Body */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Parámetros (JSON)</label>
+                  <label className="block text-sm font-medium text-gray-700">Parámetros de Entrada (JSON)</label>
                   <textarea
                     rows={4}
-                    value={metodoInfo.parametros || ""}
+                    value={""}
                     onChange={(e) => handleMetodoChange(metodoActivo, "parametros", e.target.value)}
-                    placeholder={`{\n  "param1": "valor1",\n  "param2": "valor2"\n}`}
+                    placeholder={`Parámetros de entrada en formato JSON: \n"param1": "valor1",  "param2": "valor2"\n`}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm font-mono"
                   />
                 </div>
