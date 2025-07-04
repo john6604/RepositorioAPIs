@@ -15,8 +15,6 @@ import axios from "axios";
 import { XCircle } from "lucide-react";
 import AsyncSelect from 'react-select/async';
 
-//import { useRequireAuth } from "../hooks/useRequireAuth";
-
 const metodosHttp = ["GET", "POST", "PUT", "DELETE", "PATCH"];
 
 const APIDetail = () => {
@@ -39,8 +37,6 @@ const APIDetail = () => {
   const [respuestaAPI, setRespuestaAPI] = React.useState('');
 
   const [cargando, setCargando] = useState(false);
-
-
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -116,6 +112,21 @@ const APIDetail = () => {
   // Estados para la sección de colaboradores
   const [selectedUser, setSelectedUser] = useState(null);
   const [collaborators, setCollaborators] = useState([]);
+
+  useEffect(() => {
+    if (activeTab === "api" && apiData.metodos) {
+      for (const method of metodosHttp) {
+        const info = apiData.metodos[method];
+        const tieneInfo =
+          info &&
+          (info.endpoint || info.parametros || info.requestBody || info.respuesta);
+        if (tieneInfo) {
+          setMetodoActivo(method);
+          break;
+        }
+      }
+    }
+  }, [activeTab, apiData]);
 
   useEffect(() => {
       axios
@@ -202,7 +213,6 @@ const APIDetail = () => {
   };
 
 
-
   const obtenerUsuarioActual = async () => {
     try {
       const tokenSesion = localStorage.getItem("token_sesion");
@@ -248,34 +258,6 @@ const APIDetail = () => {
         const error = await response.json();
         console.error("Error al guardar cambios:", error);
         alert("Hubo un error al guardar los cambios.");
-      }
-    } catch (err) {
-      console.error("Error al enviar solicitud:", err);
-      alert("No se pudo conectar con el servidor.");
-    }
-  };
-
-  const handlePublicarAPI = async () => {
-    const nuevaApiData = { ...apiData, permiso: "publico" };
-
-    try {
-      const response = await fetch(`${API_BASE_URL}/listarapis/${nuevaApiData.id}/`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(nuevaApiData),
-      });
-
-      if (response.ok) {
-        const updatedData = await response.json();
-        setApiData(updatedData);
-        alert("API publicada correctamente.");
-        navigate("/dashboard");
-      } else {
-        const error = await response.json();
-        console.error("Error al publicar:", error);
-        alert("Hubo un error al publicar la API.");
       }
     } catch (err) {
       console.error("Error al enviar solicitud:", err);
@@ -387,12 +369,6 @@ const APIDetail = () => {
     const esColaborador = collaborators.some(
       (colab) => Number(colab.usuario?.id) === Number(usuarioActualId)
     );
-  
-    console.log("Usuario actual:", usuarioActualId);
-    console.log("Owner:", apiData?.creado_por);
-    console.log("Colaboradores:", collaborators.map(c => c.usuario?.id));
-    console.log("¿Es owner?", esOwner);
-    console.log("¿Es colaborador?", esColaborador);
   
     setIsOwner(esOwner || esColaborador);
   }, [usuarioActualId, apiData, collaborators]);
@@ -740,24 +716,24 @@ const APIDetail = () => {
                     Privado – Solo tú tienes acceso a la API.
                   </label>
                 </div>
-                {/*<div className="flex items-center gap-3">
+                <div className="flex items-center gap-3">
                   <input
                     type="radio"
-                    id="restringido"
+                    id="publico"
                     name="permiso"
-                    value="restringido"
-                    checked={apiData.permiso === "restringido"}
+                    value="publico"
+                    checked={apiData.permiso === "publico"}
                     onChange={(e) =>
                       setApiData({ ...apiData, permiso: e.target.value })
                     }
                   />
                   <label
-                    htmlFor="restringido"
+                    htmlFor="publico"
                     className="text-sm font-medium text-gray-700"
                   >
-                    Restringida – Acceso privado pero se puede compartir con enlace.
+                    Público - Cualquier persona podrá ver la API.
                   </label>
-                </div>*/}
+                </div>
 
                 {apiData.visibility === "restricted" && (
                   <div className="pt-2">
@@ -787,7 +763,7 @@ const APIDetail = () => {
               </div>
 
               <div className="pt-4 flex gap-x-4">
-                {(apiData.permiso === "privado" || apiData.permiso === "restringido") && (
+                {(apiData.permiso === "privado" || apiData.permiso === "publico") && (
                   <button
                     className="px-4 py-2 bg-[#0077ba] text-white rounded hover:bg-[#003366] transition"
                     onClick={handleGuardarCambios}
@@ -795,12 +771,6 @@ const APIDetail = () => {
                     Guardar Cambios
                   </button>
                 )}
-                <button
-                  className="px-4 py-2 bg-[#0077ba] text-white rounded hover:bg-[#003366] transition"
-                  onClick={handlePublicarAPI}
-                >
-                  Publicar API
-                </button>
               </div>
             </div>
           )}
