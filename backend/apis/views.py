@@ -485,6 +485,9 @@ class DetalleAPIView(APIView):
             "estado": api.estado,
             "creado_en": api.creado_en,
             "actualizado_en": api.actualizado_en,
+            "categoria": api.id_categoria.nombre if api.id_categoria else None,
+            "subcategoria": api.id_subcategoria.nombre if api.id_subcategoria else None,
+            "tematica": api.id_tematica.nombre if api.id_tematica else None,
             "metodos": metodos_data
         }
         return JsonResponse(data, status=200)
