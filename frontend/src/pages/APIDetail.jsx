@@ -31,7 +31,10 @@ const APIDetail = () => {
     creado_en: "",
     actualizado_en: "",
     metodos: {},
-  });
+    categoria: "",
+    subcategoria: "",
+    tematica: "",
+  });  
   const [metodoActivo, setMetodoActivo] = useState("GET");
 
   const [respuestaAPI, setRespuestaAPI] = React.useState('');
@@ -40,8 +43,8 @@ const APIDetail = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setCargando(true); // Inicia el estado de carga
-    setRespuestaAPI(""); // Limpia el resultado anterior
+    setCargando(true); 
+    setRespuestaAPI(""); 
 
     const codigo = metodoInfo.requestBody || "";
     let parametros = {};
@@ -76,7 +79,7 @@ const APIDetail = () => {
     } catch (error) {
       setRespuestaAPI("Error en la petición: " + error.message);
     } finally {
-      setCargando(false); // Termina el estado de carga
+      setCargando(false);
     }
   }
 
@@ -106,10 +109,8 @@ const APIDetail = () => {
 
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("api");
-  //const [searchQuery, setSearchQuery] = useState("");
   const [usuarioActualId, setUsuarioActualId] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
-  // Estados para la sección de colaboradores
   const [selectedUser, setSelectedUser] = useState(null);
   const [collaborators, setCollaborators] = useState([]);
 
@@ -422,6 +423,9 @@ const APIDetail = () => {
               <h2 className="text-2xl font-bold mb-4">{apiData.nombre}</h2>
               <p className="mb-2">{apiData.descripcion}</p>
               <p className="mb-6">Versión: {apiData.documentacion}</p>
+              <p className="mb-2">Categoría: {apiData.categoria || "Sin categoría"}</p>
+              <p className="mb-2">Subcategoría: {apiData.subcategoria || "Sin subcategoría"}</p>
+              <p className="mb-6">Temática: {apiData.tematica || "Sin temática"}</p>
 
               {/* Toggle de métodos HTTP */}
               <div className="flex rounded-lg overflow-hidden border border-gray-300 mb-6">
