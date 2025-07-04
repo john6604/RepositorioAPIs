@@ -560,8 +560,18 @@ const APIDetail = () => {
                       </label>
                       <select
                         name="categoria"
-                        value={categoria}
-                        onChange={handleChange}
+                        value={apiData.categoria}
+                        onChange={(e) => {
+                          const selectedId = e.target.value;
+                          const selectedCategoria = categorias.find((cat) => String(cat.id) === selectedId);
+
+                          if (selectedCategoria) {
+                            setApiData((prev) => ({
+                              ...prev,
+                              categoria: selectedCategoria.nombre,
+                            }));
+                          }
+                        }}
                         className="mt-1 w-full px-4 py-2 border rounded-md text-sm"
                       >
                         <option value={categoria}>{apiData.categoria}</option>
