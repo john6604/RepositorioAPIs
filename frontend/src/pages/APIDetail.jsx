@@ -446,6 +446,7 @@ const APIDetail = () => {
               <h2 className="text-2xl font-bold mb-4">{apiData.nombre}</h2>
               <p className="mb-2">{apiData.descripcion}</p>
               <p className="mb-6">Versión: {apiData.documentacion}</p>
+              <p className="mb-2">Dependencias: {apiData.detalles_tecnicos || "No contiene dependencias"}</p>
               <p className="mb-2">Categoría: {apiData.categoria || "Sin categoría"}</p>
               <p className="mb-2">Subcategoría: {apiData.subcategoria || "Sin subcategoría"}</p>
               <p className="mb-6">Temática: {apiData.tematica || "Sin temática"}</p>
