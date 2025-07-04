@@ -113,6 +113,12 @@ const APIDetail = () => {
   const [isOwner, setIsOwner] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [collaborators, setCollaborators] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+  const [subcategorias, setSubcategorias] = useState([]);
+  const [tematicas, setTematicas] = useState([]);
+  const [categoria, setCategoria] = useState("");
+  const [subcategoria, setSubcategoria] = useState("");
+  const [tematica, setTematica] = useState("");
 
   useEffect(() => {
     if (activeTab === "api" && apiData.metodos) {
@@ -144,6 +150,23 @@ const APIDetail = () => {
         .catch(() => setCollaborators([]));
     }
   }, [activeTab, apiId]);
+
+  useEffect(() => {
+    axios.get(`${API_BASE_URL}/categorias/`).then((res) => {
+      setCategorias(res.data);
+      setCategoria(apiData.categoria);
+    });
+
+    axios.get(`${API_BASE_URL}/subcategorias/`).then((res) => {
+      setSubcategorias(res.data);
+      setSubcategoria(apiData.subcategoria);
+    });
+
+    axios.get(`${API_BASE_URL}/tematicas/`).then((res) => {
+      setTematicas(res.data);
+      setTematica(apiData.tematica);
+    });
+  }, [apiData]);
   
   const loadUserOptions = async (inputValue) => {
     if (!inputValue) return [];
@@ -528,6 +551,75 @@ const APIDetail = () => {
                       onChange={handleChange}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">
+                        Categoría
+                      </label>
+                      <select
+                        name="categoria"
+                        value={categoria}
+                        onChange={handleChange}
+                        className="mt-1 w-full px-4 py-2 border rounded-md text-sm"
+                      >
+                        <option value={categoria}>{apiData.categoria}</option>
+
+                        {categorias
+                          .filter((cat) => cat.nombre !== apiData.categoria)
+                          .map((cat) => (
+                            <option key={cat.id} value={cat.id}>
+                              {cat.nombre}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">
+                        Subcategoría
+                      </label>
+                      <select
+                        name="subcategoria"
+                        value={subcategoria}
+                        onChange={handleChange}
+                        className="mt-1 w-full px-4 py-2 border rounded-md text-sm"
+                      >
+                        <option value={subcategoria}>{apiData.subcategoria}</option>
+
+                        {subcategorias
+                          .filter((cat) => cat.nombre !== apiData.subcategoria)
+                          .map((cat) => (
+                            <option key={cat.id} value={cat.id}>
+                              {cat.nombre}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">
+                        Temática
+                      </label>
+                      <select
+                        name="tematica"
+                        value={tematica}
+                        onChange={handleChange}
+                        required
+                        className="mt-1 w-full px-4 py-2 border rounded-md text-sm"
+                      >
+                        <option value={tematica}>{apiData.tematica}</option>
+
+                        {tematicas
+                          .filter((cat) => cat.nombre !== apiData.tematica)
+                          .map((cat) => (
+                            <option key={cat.id} value={cat.id}>
+                              {cat.nombre}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
                   </div>
 
                   {/* Toggle de métodos HTTP */}

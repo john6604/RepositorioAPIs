@@ -506,6 +506,21 @@ class DetalleAPIView(APIView):
         api.documentacion = data.get("documentacion", api.documentacion)
         api.permiso = data.get("permiso", api.permiso)
         api.actualizado_en = timezone.now()
+
+        # Actualizar relaciones con categoría, subcategoría y temática
+        id_categoria = data.get("categoria_id")
+        id_subcategoria = data.get("subcategoria_id")
+        id_tematica = data.get("tematica_id")
+
+        if id_categoria is not None:
+            api.id_categoria = get_object_or_404(Categoria, id=id_categoria)
+
+        if id_subcategoria is not None:
+            api.id_subcategoria = get_object_or_404(Subcategoria, id=id_subcategoria)
+
+        if id_tematica is not None:
+            api.id_tematica = get_object_or_404(Tematica, id=id_tematica)
+
         api.save()
 
         # Actualizar métodos HTTP asociados
@@ -520,7 +535,6 @@ class DetalleAPIView(APIView):
                 metodo_obj.retorno = datos_metodo.get("respuesta", metodo_obj.retorno)
                 metodo_obj.save()
             except MetodoApi.DoesNotExist:
-               
                 continue
 
         return JsonResponse({"detail": "API y métodos actualizados correctamente."}, status=200)
