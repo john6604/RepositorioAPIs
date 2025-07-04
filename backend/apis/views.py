@@ -508,18 +508,18 @@ class DetalleAPIView(APIView):
         api.actualizado_en = timezone.now()
 
         # Actualizar relaciones con categoría, subcategoría y temática
-        id_categoria = data.get("categoria")
-        id_subcategoria = data.get("subcategoria")
-        id_tematica = data.get("tematica")
+        id_categoria = data.get("categoria_id")
+        id_subcategoria = data.get("subcategoria_id")
+        id_tematica = data.get("tematica_id")
 
         if id_categoria is not None:
-            api.id_categoria = get_object_or_404(Categoria, id=id_categoria.id)
+            api.id_categoria = get_object_or_404(Categoria, id=id_categoria)
 
         if id_subcategoria is not None:
-            api.id_subcategoria = get_object_or_404(Subcategoria, id=id_subcategoria.id)
+            api.id_subcategoria = get_object_or_404(Subcategoria, id=id_subcategoria)
 
         if id_tematica is not None:
-            api.id_tematica = get_object_or_404(Tematica, id=id_tematica.id)
+            api.id_tematica = get_object_or_404(Tematica, id=id_tematica)
 
         api.save()
 
