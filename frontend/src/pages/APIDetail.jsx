@@ -209,7 +209,7 @@ const APIDetail = () => {
   };
   const allTabs = [
     { id: "api", label: "API", icon: Code2 },
-    { id: "settings", label: "Modificación", icon: Settings },
+    { id: "settings", label: "Configuración", icon: Settings },
     { id: "colaborators", label: "Colaboradores", icon: Users },
     { id: "permissions", label: "Permisos", icon: Lock },
     { id: "consume", label: "Consumir", icon: FileTerminal },
@@ -934,7 +934,7 @@ const APIDetail = () => {
                     <input
                       type="text"
                       value={metodoInfo.endpoint || ""}
-                      onChange={(e) => handleMetodoChange(metodoActivo, "endpoint", e.target.value)}
+                      readOnly
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
                       placeholder="/ejemplo"
                     />
@@ -946,7 +946,6 @@ const APIDetail = () => {
                   <label className="block text-sm font-medium text-gray-700">Parámetros de Entrada (JSON)</label>
                   <textarea
                     rows={4}
-                    value={""}
                     onChange={(e) => handleMetodoChange(metodoActivo, "parametros", e.target.value)}
                     placeholder={`Parámetros de entrada en formato JSON: \n"param1": "valor1",  "param2": "valor2"\n`}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm font-mono"
